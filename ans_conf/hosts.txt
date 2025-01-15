@@ -1,0 +1,13 @@
+[stage]
+10.0.0.10
+
+[prod]
+10.0.0.222
+
+[ALL:children]
+stage
+prod
+
+[ALL:vars]
+ansible_user=ubuntu
+ansible_ssh_private_key_file=/home/ubuntu/.ssh/ansible_key
