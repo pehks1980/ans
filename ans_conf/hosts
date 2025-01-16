@@ -1,14 +1,15 @@
 [stage]
-10.0.0.53
+10.0.0.158
 
 [prod]
-10.0.0.150
+10.0.0.161
 
 
 [ALL:children]
 stage
 prod
 
-[ALL:vars]
-ansible_user=ubuntu
-ansible_ssh_private_key_file=/home/ubuntu/.ssh/ansible_key
+#moved vars out to folder named group_vars
+#[ALL:vars]
+#ansible_user=ubuntu
+#ansible_ssh_private_key_file=/home/ubuntu/.ssh/ansible_key

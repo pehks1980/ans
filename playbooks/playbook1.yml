@@ -1,0 +1,34 @@
+---
+- name: Playbook1 - check vars and debug
+  hosts: all
+  become: yes
+
+  vars:
+    msg1: Privet
+    msg2: World
+    secret: zx12345
+
+  tasks:
+
+  - name: Print var
+    debug:
+       var: secret
+
+  - debug:
+       msg: "Secret var: {{ secret }}"
+  
+  - debug:
+       msg: "Server: {{ ansible_os_family }} Owner: {{ ansible_default_ipv4.address }}"
+  - name: Make combine message like printf
+    set_fact: fact_msg=" HI {{ msg1 }} {{ msg2 }} from {{ ansible_default_ipv4.address }} {{ ansible_distribution }}"
+
+  - name: print resulted message in var fact_msg
+    debug:
+       var: fact_msg
+  - name: exec uptime on (every) host and get output to results (json)
+    shell: uptime 
+    register: results
+
+  - name: print results - output from shell
+    debug:
+       var: results.stdout

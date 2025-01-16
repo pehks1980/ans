@@ -35,9 +35,10 @@ def generate_hosts_file(client_ips, output_file=f"{conf_path}/hosts"):
 stage
 prod
 
-[ALL:vars]
-ansible_user=ubuntu
-ansible_ssh_private_key_file=/home/ubuntu/.ssh/ansible_key""")
+#moved vars out to folder named group_vars
+#[ALL:vars]
+#ansible_user=ubuntu
+#ansible_ssh_private_key_file=/home/ubuntu/.ssh/ansible_key""")
             print(f"Hosts file generated: {output_file}")
     except Exception as e:
         print(f"Error generating hosts file: {e}")
