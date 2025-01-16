@@ -1,0 +1,80 @@
+ansible all -m shell -a "uname -a  && lsblk | grep vda"   (command)
+
+ansible all -m copy -a "src=privet.txt dest=/home/ubuntu/privet.txt"
+
+#copy file dir
+
+ansible all -m copy -a "src=privet.txt dest=/home/ubuntu/privet.txt mode=777"
+10.0.0.137 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": true,
+    "checksum": "2672275fe0c456fb671e4f417fb2f9892c7573ba",
+    "dest": "/home/ubuntu/privet.txt",
+    "gid": 1000,
+    "group": "ubuntu",
+    "mode": "0777",
+    "owner": "ubuntu",
+    "path": "/home/ubuntu/privet.txt",
+    "size": 6,
+    "state": "file",
+    "uid": 1000
+
+dir copy
+
+    ansible all -m copy -a "src=~/ansible dest=/home/ubuntu/ansible"  
+
+remove dir-file
+
+    ansible all -m file -a "path=/home/ubuntu/ansible state=absent"
+
+mkdir
+
+ansible all -m file -a "path=/home/ubuntu/mydir1 state=directory owner=root group=root" -b
+
+    ansible all -m shell -a "ls -l"
+10.0.0.137 | CHANGED | rc=0 >>
+total 24
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jan 15 16:13 ansible
+-rw-rw-r-- 1 ubuntu ubuntu   65 Jan 15 15:55 ansible.cfg
+-rw-rw-r-- 1 ubuntu ubuntu  156 Jan 15 15:55 hosts
+-rw-rw-r-- 1 ubuntu ubuntu  155 Jan 15 15:55 hosts.txt
+drwxrwxr-x 2 root   root   4096 Jan 15 16:15 mydir1
+-rwxrwxrwx 1 ubuntu ubuntu    6 Jan 15 15:49 privet.txt
+
+#archive dir
+ansible prod -m archive -a "path=/home/ubuntu/ansible dest=/home/ubuntu/ansible.tar.gz"
+
+
+#install apt
+
+ansible all -m apt -a "name=stress state=latest update_cache=yes" -b   | update_cache=yes upgrade=yes"
+#remove
+ansible all -m apt -a "name=stress state=absent update_cache=yes" -b  
+
+#copy drive link file
+
+ansible all -m get_url -a "url=https://docs.google.com/spreadsheets/d/1sh198C-NnpGz2bQEMSZ7uB6ao5mGM38THrkadoDBhNw/edit?usp=sharing dest=/home/ubuntu/file.txt"
+
+
+ansible all -m apt -a "name=apache2 state=latest update_cache=yes" -b
+
+ansible all -m service -a "name=apache2 state=started enabled=yes" -b
+
+#debug
+add -v -vv etc at the end of command to get extra output
+
+#check host specific vars like fqdn ip os etc
+
+ansible all -m setup 
+
+https://docs.ansible.com/ansible/latest/plugins/module.html
+
+
+
+
+ansible-doc <module> file archive git debug
+
+
+
