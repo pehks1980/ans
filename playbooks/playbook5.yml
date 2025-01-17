@@ -1,0 +1,67 @@
+---
+- name: Find and copy files from controller to remote hosts
+  hosts: localhost
+  tasks:
+  - name: Run shell to verify directory
+    shell: "ls -ld /home/ubuntu/ansible/playbooks/web"
+    register: dir_check
+
+  - name: Debug shell output
+    debug:
+      var: dir_check.stdout
+
+  - name: Find files in the local folder
+    find:
+      paths: "/home/ubuntu/ansible/playbooks/web"
+      file_type: file
+    register: files_to_copy
+
+- name: Playbook5 - playbook 3 apache web server PLUS advanced copy of all files found in src folders
+  hosts: all
+  become: yes
+
+  vars:
+    src_html: /home/ubuntu/ansible/playbooks/web
+    dest_html: /var/www/html
+    mode: 0555
+
+  tasks:
+  - name: Print linux version
+    debug:
+      msg: " linux is {{ ansible_os_family }}"
+  - name: Install apache
+    apt: name=apache2 state=latest update_cache=yes
+    register: apache_install_output
+
+  #check out our list of foud files in first playbook
+  #- name: Debug files found in first playbook
+  #  debug:
+  #    var: hostvars['localhost'].files_to_copy.files
+  # check for files on controllers (local) folder
+  - name: Display paths of all files in dir
+    debug: msg={{ lookup('ansible.builtin.fileglob', "{{src_html}}/*") }}
+  #copy from local system (controller) remote host[i]
+  - name: copy files found to web server
+    copy: src={{ item }} dest={{ dest_html }} mode={{ mode }}
+    with_fileglob: "{{ src_html }}/*"
+    #copy: src={{ item.path }} dest={{ dest_html }} mode={{ mode }}
+    #with_items: "{{ hostvars['localhost'].files_to_copy.files }}"
+    notify: Restart Apache on notify event
+    register: copy_std
+
+    #- name: Display copy output
+    #debug:
+    #  var: copy_std
+
+  - name: Check if Apache2 is running
+    shell: systemctl is-active apache2
+    register: apache_status
+    ignore_errors: yes  # Ignore errors if Apache2 is not running
+
+  - name: Start apache IF it is not active
+    service: name=apache2 state=started enabled=yes
+    when: apache_status.stdout != "active"
+
+  handlers:
+  - name: Restart Apache on notify event
+    service: name=apache2 state=started

@@ -1,0 +1,42 @@
+---
+- name: Playbook3 - notify handlers AND start apache IF it's not running
+  hosts: all
+  become: yes
+
+  vars:
+    src_html: ./web/index.html
+    dest_html: /var/www/html
+    mode: 0555
+
+  tasks:
+  - name: Print linux version
+    debug:
+      msg: " linux is {{ ansible_os_family }}"
+  - name: Install apache
+    apt: name=apache2 state=latest update_cache=yes
+    register: apache_install_output
+
+  #- name: Display Apache installation output
+  #  debug:
+  #    var: apache_install_output.stdout
+
+  - name: copy index page to web server
+    copy: src={{ src_html }} dest={{ dest_html }} mode={{ mode }}
+    notify: Restart Apache on notify event
+    register: copy_std
+  - name: Display copy output
+    debug:
+      var: copy_std
+
+  - name: Check if Apache2 is running
+    shell: systemctl is-active apache2
+    register: apache_status
+    ignore_errors: yes  # Ignore errors if Apache2 is not running
+
+  - name: Start apache IF it is not active
+    service: name=apache2 state=started enabled=yes
+    when: apache_status.stdout != "active"
+
+  handlers:
+  - name: Restart Apache on notify event
+    service: name=apache2 state=started

@@ -1,0 +1,528 @@
+ansible-playbook playbooks/playbook5.yml
+
+PLAY [Find and copy files from controller to remote hosts] ************************************************************************************************
+
+TASK [Gathering Facts] ************************************************************************************************************************************
+ok: [localhost]
+
+TASK [Run shell to verify directory] **********************************************************************************************************************
+changed: [localhost]
+
+TASK [Debug shell output] *********************************************************************************************************************************
+ok: [localhost] => {
+    "dir_check.stdout": "drwxr-xr-x 2 ubuntu ubuntu 4096 Jan 17 09:35 /home/ubuntu/ansible/playbooks/web"
+}
+
+TASK [Find files in the local folder] *********************************************************************************************************************
+ok: [localhost]
+
+PLAY [Playbook5 - playbook 3 apache web server PLUS advanced copy of all files found in src folders] ******************************************************
+
+TASK [Gathering Facts] ************************************************************************************************************************************
+ok: [10.0.0.14]
+ok: [10.0.0.41]
+
+TASK [Print linux version] ********************************************************************************************************************************
+ok: [10.0.0.41] => {
+    "msg": " linux is Debian"
+}
+ok: [10.0.0.14] => {
+    "msg": " linux is Debian"
+}
+
+TASK [Install apache] *************************************************************************************************************************************
+ok: [10.0.0.14]
+ok: [10.0.0.41]
+
+TASK [Debug files found in first playbook] ****************************************************************************************************************
+ok: [10.0.0.41] => {
+    "hostvars['localhost'].files_to_copy.files": [
+        {
+            "atime": 1737109751.4988222,
+            "ctime": 1737110165.5661318,
+            "dev": 51713,
+            "gid": 1000,
+            "gr_name": "ubuntu",
+            "inode": 272400,
+            "isblk": false,
+            "ischr": false,
+            "isdir": false,
+            "isfifo": false,
+            "isgid": false,
+            "islnk": false,
+            "isreg": true,
+            "issock": false,
+            "isuid": false,
+            "mode": "0644",
+            "mtime": 1737110165.5661318,
+            "nlink": 1,
+            "path": "/home/ubuntu/ansible/playbooks/web/backgr.jpg",
+            "pw_name": "ubuntu",
+            "rgrp": true,
+            "roth": true,
+            "rusr": true,
+            "size": 231719,
+            "uid": 1000,
+            "wgrp": false,
+            "woth": false,
+            "wusr": true,
+            "xgrp": false,
+            "xoth": false,
+            "xusr": false
+        },
+        {
+            "atime": 1737109754.8587837,
+            "ctime": 1737110166.5301208,
+            "dev": 51713,
+            "gid": 1000,
+            "gr_name": "ubuntu",
+            "inode": 272393,
+            "isblk": false,
+            "ischr": false,
+            "isdir": false,
+            "isfifo": false,
+            "isgid": false,
+            "islnk": false,
+            "isreg": true,
+            "issock": false,
+            "isuid": false,
+            "mode": "0644",
+            "mtime": 1737110166.5301208,
+            "nlink": 1,
+            "path": "/home/ubuntu/ansible/playbooks/web/index.html",
+            "pw_name": "ubuntu",
+            "rgrp": true,
+            "roth": true,
+            "rusr": true,
+            "size": 1619,
+            "uid": 1000,
+            "wgrp": false,
+            "woth": false,
+            "wusr": true,
+            "xgrp": false,
+            "xoth": false,
+            "xusr": false
+        }
+    ]
+}
+ok: [10.0.0.14] => {
+    "hostvars['localhost'].files_to_copy.files": [
+        {
+            "atime": 1737109751.4988222,
+            "ctime": 1737110165.5661318,
+            "dev": 51713,
+            "gid": 1000,
+            "gr_name": "ubuntu",
+            "inode": 272400,
+            "isblk": false,
+            "ischr": false,
+            "isdir": false,
+            "isfifo": false,
+            "isgid": false,
+            "islnk": false,
+            "isreg": true,
+            "issock": false,
+            "isuid": false,
+            "mode": "0644",
+            "mtime": 1737110165.5661318,
+            "nlink": 1,
+            "path": "/home/ubuntu/ansible/playbooks/web/backgr.jpg",
+            "pw_name": "ubuntu",
+            "rgrp": true,
+            "roth": true,
+            "rusr": true,
+            "size": 231719,
+            "uid": 1000,
+            "wgrp": false,
+            "woth": false,
+            "wusr": true,
+            "xgrp": false,
+            "xoth": false,
+            "xusr": false
+        },
+        {
+            "atime": 1737109754.8587837,
+            "ctime": 1737110166.5301208,
+            "dev": 51713,
+            "gid": 1000,
+            "gr_name": "ubuntu",
+            "inode": 272393,
+            "isblk": false,
+            "ischr": false,
+            "isdir": false,
+            "isfifo": false,
+            "isgid": false,
+            "islnk": false,
+            "isreg": true,
+            "issock": false,
+            "isuid": false,
+            "mode": "0644",
+            "mtime": 1737110166.5301208,
+            "nlink": 1,
+            "path": "/home/ubuntu/ansible/playbooks/web/index.html",
+            "pw_name": "ubuntu",
+            "rgrp": true,
+            "roth": true,
+            "rusr": true,
+            "size": 1619,
+            "uid": 1000,
+            "wgrp": false,
+            "woth": false,
+            "wusr": true,
+            "xgrp": false,
+            "xoth": false,
+            "xusr": false
+        }
+    ]
+}
+
+TASK [copy files found to web server] *********************************************************************************************************************
+changed: [10.0.0.14] => (item={'path': '/home/ubuntu/ansible/playbooks/web/backgr.jpg', 'mode': '0644', 'isdir': False, 'ischr': False, 'isblk': False, 'isreg': True, 'isfifo': False, 'islnk': False, 'issock': False, 'uid': 1000, 'gid': 1000, 'size': 231719, 'inode': 272400, 'dev': 51713, 'nlink': 1, 'atime': 1737109751.4988222, 'mtime': 1737110165.5661318, 'ctime': 1737110165.5661318, 'gr_name': 'ubuntu', 'pw_name': 'ubuntu', 'wusr': True, 'rusr': True, 'xusr': False, 'wgrp': False, 'rgrp': True, 'xgrp': False, 'woth': False, 'roth': True, 'xoth': False, 'isuid': False, 'isgid': False})
+changed: [10.0.0.41] => (item={'path': '/home/ubuntu/ansible/playbooks/web/backgr.jpg', 'mode': '0644', 'isdir': False, 'ischr': False, 'isblk': False, 'isreg': True, 'isfifo': False, 'islnk': False, 'issock': False, 'uid': 1000, 'gid': 1000, 'size': 231719, 'inode': 272400, 'dev': 51713, 'nlink': 1, 'atime': 1737109751.4988222, 'mtime': 1737110165.5661318, 'ctime': 1737110165.5661318, 'gr_name': 'ubuntu', 'pw_name': 'ubuntu', 'wusr': True, 'rusr': True, 'xusr': False, 'wgrp': False, 'rgrp': True, 'xgrp': False, 'woth': False, 'roth': True, 'xoth': False, 'isuid': False, 'isgid': False})
+changed: [10.0.0.14] => (item={'path': '/home/ubuntu/ansible/playbooks/web/index.html', 'mode': '0644', 'isdir': False, 'ischr': False, 'isblk': False, 'isreg': True, 'isfifo': False, 'islnk': False, 'issock': False, 'uid': 1000, 'gid': 1000, 'size': 1619, 'inode': 272393, 'dev': 51713, 'nlink': 1, 'atime': 1737109754.8587837, 'mtime': 1737110166.5301208, 'ctime': 1737110166.5301208, 'gr_name': 'ubuntu', 'pw_name': 'ubuntu', 'wusr': True, 'rusr': True, 'xusr': False, 'wgrp': False, 'rgrp': True, 'xgrp': False, 'woth': False, 'roth': True, 'xoth': False, 'isuid': False, 'isgid': False})
+changed: [10.0.0.41] => (item={'path': '/home/ubuntu/ansible/playbooks/web/index.html', 'mode': '0644', 'isdir': False, 'ischr': False, 'isblk': False, 'isreg': True, 'isfifo': False, 'islnk': False, 'issock': False, 'uid': 1000, 'gid': 1000, 'size': 1619, 'inode': 272393, 'dev': 51713, 'nlink': 1, 'atime': 1737109754.8587837, 'mtime': 1737110166.5301208, 'ctime': 1737110166.5301208, 'gr_name': 'ubuntu', 'pw_name': 'ubuntu', 'wusr': True, 'rusr': True, 'xusr': False, 'wgrp': False, 'rgrp': True, 'xgrp': False, 'woth': False, 'roth': True, 'xoth': False, 'isuid': False, 'isgid': False})
+
+TASK [Display copy output] ********************************************************************************************************************************
+ok: [10.0.0.41] => {
+    "copy_std": {
+        "changed": true,
+        "msg": "All items completed",
+        "results": [
+            {
+                "ansible_loop_var": "item",
+                "changed": true,
+                "checksum": "2dfb563d25eb13bbc940a8655aa6b05c4cfae0c4",
+                "dest": "/var/www/html/backgr.jpg",
+                "diff": [],
+                "failed": false,
+                "gid": 0,
+                "group": "root",
+                "invocation": {
+                    "module_args": {
+                        "_original_basename": "backgr.jpg",
+                        "attributes": null,
+                        "backup": false,
+                        "checksum": "2dfb563d25eb13bbc940a8655aa6b05c4cfae0c4",
+                        "content": null,
+                        "delimiter": null,
+                        "dest": "/var/www/html/backgr.jpg",
+                        "directory_mode": null,
+                        "follow": false,
+                        "force": true,
+                        "group": null,
+                        "local_follow": null,
+                        "mode": 365,
+                        "owner": null,
+                        "regexp": null,
+                        "remote_src": null,
+                        "selevel": null,
+                        "serole": null,
+                        "setype": null,
+                        "seuser": null,
+                        "src": "/home/ubuntu/.ansible/tmp/ansible-tmp-1737110198.58359-99739693639601/source",
+                        "unsafe_writes": null,
+                        "validate": null
+                    }
+                },
+                "item": {
+                    "atime": 1737109751.4988222,
+                    "ctime": 1737110165.5661318,
+                    "dev": 51713,
+                    "gid": 1000,
+                    "gr_name": "ubuntu",
+                    "inode": 272400,
+                    "isblk": false,
+                    "ischr": false,
+                    "isdir": false,
+                    "isfifo": false,
+                    "isgid": false,
+                    "islnk": false,
+                    "isreg": true,
+                    "issock": false,
+                    "isuid": false,
+                    "mode": "0644",
+                    "mtime": 1737110165.5661318,
+                    "nlink": 1,
+                    "path": "/home/ubuntu/ansible/playbooks/web/backgr.jpg",
+                    "pw_name": "ubuntu",
+                    "rgrp": true,
+                    "roth": true,
+                    "rusr": true,
+                    "size": 231719,
+                    "uid": 1000,
+                    "wgrp": false,
+                    "woth": false,
+                    "wusr": true,
+                    "xgrp": false,
+                    "xoth": false,
+                    "xusr": false
+                },
+                "md5sum": "a34fbfe58cf656bdf61ad20f5d42932d",
+                "mode": "0555",
+                "owner": "root",
+                "size": 231719,
+                "src": "/home/ubuntu/.ansible/tmp/ansible-tmp-1737110198.58359-99739693639601/source",
+                "state": "file",
+                "uid": 0
+            },
+            {
+                "ansible_loop_var": "item",
+                "changed": true,
+                "checksum": "882b8f792fc18ed3410dcf972f4ac097ba54aa2c",
+                "dest": "/var/www/html/index.html",
+                "diff": [],
+                "failed": false,
+                "gid": 0,
+                "group": "root",
+                "invocation": {
+                    "module_args": {
+                        "_original_basename": "index.html",
+                        "attributes": null,
+                        "backup": false,
+                        "checksum": "882b8f792fc18ed3410dcf972f4ac097ba54aa2c",
+                        "content": null,
+                        "delimiter": null,
+                        "dest": "/var/www/html/index.html",
+                        "directory_mode": null,
+                        "follow": false,
+                        "force": true,
+                        "group": null,
+                        "local_follow": null,
+                        "mode": 365,
+                        "owner": null,
+                        "regexp": null,
+                        "remote_src": null,
+                        "selevel": null,
+                        "serole": null,
+                        "setype": null,
+                        "seuser": null,
+                        "src": "/home/ubuntu/.ansible/tmp/ansible-tmp-1737110199.562753-51626502954347/source",
+                        "unsafe_writes": null,
+                        "validate": null
+                    }
+                },
+                "item": {
+                    "atime": 1737109754.8587837,
+                    "ctime": 1737110166.5301208,
+                    "dev": 51713,
+                    "gid": 1000,
+                    "gr_name": "ubuntu",
+                    "inode": 272393,
+                    "isblk": false,
+                    "ischr": false,
+                    "isdir": false,
+                    "isfifo": false,
+                    "isgid": false,
+                    "islnk": false,
+                    "isreg": true,
+                    "issock": false,
+                    "isuid": false,
+                    "mode": "0644",
+                    "mtime": 1737110166.5301208,
+                    "nlink": 1,
+                    "path": "/home/ubuntu/ansible/playbooks/web/index.html",
+                    "pw_name": "ubuntu",
+                    "rgrp": true,
+                    "roth": true,
+                    "rusr": true,
+                    "size": 1619,
+                    "uid": 1000,
+                    "wgrp": false,
+                    "woth": false,
+                    "wusr": true,
+                    "xgrp": false,
+                    "xoth": false,
+                    "xusr": false
+                },
+                "md5sum": "7fc95754d591daba3c1483e4bdf61f2f",
+                "mode": "0555",
+                "owner": "root",
+                "size": 1619,
+                "src": "/home/ubuntu/.ansible/tmp/ansible-tmp-1737110199.562753-51626502954347/source",
+                "state": "file",
+                "uid": 0
+            }
+        ]
+    }
+}
+ok: [10.0.0.14] => {
+    "copy_std": {
+        "changed": true,
+        "msg": "All items completed",
+        "results": [
+            {
+                "ansible_loop_var": "item",
+                "changed": true,
+                "checksum": "2dfb563d25eb13bbc940a8655aa6b05c4cfae0c4",
+                "dest": "/var/www/html/backgr.jpg",
+                "diff": [],
+                "failed": false,
+                "gid": 0,
+                "group": "root",
+                "invocation": {
+                    "module_args": {
+                        "_original_basename": "backgr.jpg",
+                        "attributes": null,
+                        "backup": false,
+                        "checksum": "2dfb563d25eb13bbc940a8655aa6b05c4cfae0c4",
+                        "content": null,
+                        "delimiter": null,
+                        "dest": "/var/www/html/backgr.jpg",
+                        "directory_mode": null,
+                        "follow": false,
+                        "force": true,
+                        "group": null,
+                        "local_follow": null,
+                        "mode": 365,
+                        "owner": null,
+                        "regexp": null,
+                        "remote_src": null,
+                        "selevel": null,
+                        "serole": null,
+                        "setype": null,
+                        "seuser": null,
+                        "src": "/home/ubuntu/.ansible/tmp/ansible-tmp-1737110198.5911386-57427521137128/source",
+                        "unsafe_writes": null,
+                        "validate": null
+                    }
+                },
+                "item": {
+                    "atime": 1737109751.4988222,
+                    "ctime": 1737110165.5661318,
+                    "dev": 51713,
+                    "gid": 1000,
+                    "gr_name": "ubuntu",
+                    "inode": 272400,
+                    "isblk": false,
+                    "ischr": false,
+                    "isdir": false,
+                    "isfifo": false,
+                    "isgid": false,
+                    "islnk": false,
+                    "isreg": true,
+                    "issock": false,
+                    "isuid": false,
+                    "mode": "0644",
+                    "mtime": 1737110165.5661318,
+                    "nlink": 1,
+                    "path": "/home/ubuntu/ansible/playbooks/web/backgr.jpg",
+                    "pw_name": "ubuntu",
+                    "rgrp": true,
+                    "roth": true,
+                    "rusr": true,
+                    "size": 231719,
+                    "uid": 1000,
+                    "wgrp": false,
+                    "woth": false,
+                    "wusr": true,
+                    "xgrp": false,
+                    "xoth": false,
+                    "xusr": false
+                },
+                "md5sum": "a34fbfe58cf656bdf61ad20f5d42932d",
+                "mode": "0555",
+                "owner": "root",
+                "size": 231719,
+                "src": "/home/ubuntu/.ansible/tmp/ansible-tmp-1737110198.5911386-57427521137128/source",
+                "state": "file",
+                "uid": 0
+            },
+            {
+                "ansible_loop_var": "item",
+                "changed": true,
+                "checksum": "882b8f792fc18ed3410dcf972f4ac097ba54aa2c",
+                "dest": "/var/www/html/index.html",
+                "diff": [],
+                "failed": false,
+                "gid": 0,
+                "group": "root",
+                "invocation": {
+                    "module_args": {
+                        "_original_basename": "index.html",
+                        "attributes": null,
+                        "backup": false,
+                        "checksum": "882b8f792fc18ed3410dcf972f4ac097ba54aa2c",
+                        "content": null,
+                        "delimiter": null,
+                        "dest": "/var/www/html/index.html",
+                        "directory_mode": null,
+                        "follow": false,
+                        "force": true,
+                        "group": null,
+                        "local_follow": null,
+                        "mode": 365,
+                        "owner": null,
+                        "regexp": null,
+                        "remote_src": null,
+                        "selevel": null,
+                        "serole": null,
+                        "setype": null,
+                        "seuser": null,
+                        "src": "/home/ubuntu/.ansible/tmp/ansible-tmp-1737110199.554844-208914965746854/source",
+                        "unsafe_writes": null,
+                        "validate": null
+                    }
+                },
+                "item": {
+                    "atime": 1737109754.8587837,
+                    "ctime": 1737110166.5301208,
+                    "dev": 51713,
+                    "gid": 1000,
+                    "gr_name": "ubuntu",
+                    "inode": 272393,
+                    "isblk": false,
+                    "ischr": false,
+                    "isdir": false,
+                    "isfifo": false,
+                    "isgid": false,
+                    "islnk": false,
+                    "isreg": true,
+                    "issock": false,
+                    "isuid": false,
+                    "mode": "0644",
+                    "mtime": 1737110166.5301208,
+                    "nlink": 1,
+                    "path": "/home/ubuntu/ansible/playbooks/web/index.html",
+                    "pw_name": "ubuntu",
+                    "rgrp": true,
+                    "roth": true,
+                    "rusr": true,
+                    "size": 1619,
+                    "uid": 1000,
+                    "wgrp": false,
+                    "woth": false,
+                    "wusr": true,
+                    "xgrp": false,
+                    "xoth": false,
+                    "xusr": false
+                },
+                "md5sum": "7fc95754d591daba3c1483e4bdf61f2f",
+                "mode": "0555",
+                "owner": "root",
+                "size": 1619,
+                "src": "/home/ubuntu/.ansible/tmp/ansible-tmp-1737110199.554844-208914965746854/source",
+                "state": "file",
+                "uid": 0
+            }
+        ]
+    }
+}
+
+TASK [Check if Apache2 is running] ************************************************************************************************************************
+fatal: [10.0.0.41]: FAILED! => {"changed": true, "cmd": "systemctl is-active apache2", "delta": "0:00:00.006049", "end": "2025-01-17 10:36:40.600553", "msg": "non-zero return code", "rc": 3, "start": "2025-01-17 10:36:40.594504", "stderr": "", "stderr_lines": [], "stdout": "inactive", "stdout_lines": ["inactive"]}
+...ignoring
+fatal: [10.0.0.14]: FAILED! => {"changed": true, "cmd": "systemctl is-active apache2", "delta": "0:00:00.006399", "end": "2025-01-17 10:36:40.614903", "msg": "non-zero return code", "rc": 3, "start": "2025-01-17 10:36:40.608504", "stderr": "", "stderr_lines": [], "stdout": "inactive", "stdout_lines": ["inactive"]}
+...ignoring
+
+TASK [Start apache IF it is not active] *******************************************************************************************************************
+changed: [10.0.0.41]
+changed: [10.0.0.14]
+
+RUNNING HANDLER [Restart Apache on notify event] **********************************************************************************************************
+ok: [10.0.0.14]
+ok: [10.0.0.41]
+
+PLAY RECAP ************************************************************************************************************************************************
+10.0.0.14                  : ok=9    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1
+10.0.0.41                  : ok=9    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=1
+localhost                  : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
