@@ -3,6 +3,7 @@
   become: yes
   vars:
     action: "install"  # Default action, can be overridden with --extra-vars
+    # block - when clause makes kind of proc which is called when var (action) has some value
   tasks:
     - block:
         - name: Install Apache2
@@ -30,7 +31,7 @@
             name: apache2
             state: stopped
       when: action == "stop"
-
+    # if var is not in list of values of sense
     - block:
         - name: Debug invalid action
           debug:

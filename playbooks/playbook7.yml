@@ -1,0 +1,7 @@
+---
+- name: Playbook7 - apache web server deployment similar to plb6 but with use of roles.
+  hosts: all
+  become: yes
+  #run role if we have system[i] - linux host or server
+  roles:
+    - { role: deploy_apache_web, when: ansible_system == 'Linux' } 

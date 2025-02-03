@@ -76,5 +76,28 @@ https://docs.ansible.com/ansible/latest/plugins/module.html
 
 ansible-doc <module> file archive git debug
 
+#make roles dir tree
+playbooks$ mkdir roles
+:~/ansible/playbooks$ cd  roles
+:~/ansible/playbooks/roles$ ansible-galaxy init deploy_apache_web
 
+~/ansible/playbooks/roles$ tree
+.
+└── deploy_apache_web
+    ├── README.md
+    ├── defaults
+    │   └── main.yml
+    ├── files
+    ├── handlers
+    │   └── main.yml
+    ├── meta
+    │   └── main.yml
+    ├── tasks
+    │   └── main.yml
+    ├── templates
+    ├── tests
+    │   ├── inventory
+    │   └── test.yml
+    └── vars
+        └── main.yml
 

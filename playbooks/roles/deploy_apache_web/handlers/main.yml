@@ -1,0 +1,4 @@
+---
+# handlers file for deploy_apache_web
+- name: Restart Apache on notify event
+  service: name=apache2 state=started

@@ -130,7 +130,7 @@ resource "aws_instance" "ansible_server" {
   # Install Ansible
   # apt-get install -y software-properties-common
   # add-apt-repository --yes --update ppa:ansible/ansible
-  apt-get install -y ansible
+  apt-get install -y ansible tree
 
   # Add Ansible inventory directory and default hosts file
   mkdir -p /home/ubuntu/ansible

@@ -1,0 +1,4 @@
+---
+# defaults file for deploy_apache_web
+dest_html: /var/www/html
+mode: 0644

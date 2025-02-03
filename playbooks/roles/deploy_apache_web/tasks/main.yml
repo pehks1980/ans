@@ -1,0 +1,41 @@
+---
+# tasks file for deploy_apache_web
+  - name: Print linux version
+    debug:
+      msg: " linux is {{ ansible_os_family }} vars used in j2 {{ ansible_date_time.iso8601 }} {{ ansible_fqdn }} "
+  - name: Install apache
+    apt: name=apache2 state=latest update_cache=yes
+    register: apache_install_output
+
+  #GENERATE html from Template here dest file .html specified in dest=
+  - name: Make index.html from j2 template file
+    template: src=index.j2 dest={{ dest_html }}/index.html mode={{ mode }}
+    notify: Restart Apache on notify event
+    register: mk_template
+
+  - name: Debug mk_template
+    debug:
+       var: mk_template
+
+
+  - name: Display paths of all files in dir
+    debug: msg={{ lookup('ansible.builtin.fileglob', "./*") }}
+  #copy from local system (controller) remote host[i]
+  - name: copy files found to web server
+    copy: src={{ item }} dest={{ dest_html }} mode={{ mode }}
+    with_fileglob: "./*.jpg"
+    notify: Restart Apache on notify event
+    register: copy_std
+
+    #- name: Display copy output
+    #debug:
+    #  var: copy_std
+
+  - name: Check if Apache2 is running
+    shell: systemctl is-active apache2
+    register: apache_status
+    ignore_errors: yes  # Ignore errors if Apache2 is not running
+
+  - name: Start apache IF it is not active
+    service: name=apache2 state=started enabled=yes
+    when: apache_status.stdout != "active"
