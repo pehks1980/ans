@@ -1,8 +1,11 @@
-- name: Manage Apache2 installation and service usage ansible-playbook manage_apache.yml -e "action=install"
-  hosts: all
+---
+# -e vars have HIGHEST priority in a playbook
+- name: Manage Apache2 installation and service. usage - ansible-playbook playbooks/playbook4.yml -e "action=install myhosts=prod"
+  hosts: "{{ myhosts }}"
   become: yes
   vars:
-    action: "install"  # Default action, can be overridden with --extra-vars
+    myhosts: "all" # default
+    action: "install"  # Default action, can be overridden with --extra-vars -e
     # block - when clause makes kind of proc which is called when var (action) has some value
   tasks:
     - block:

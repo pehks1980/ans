@@ -1,0 +1,17 @@
+---
+- name: Playbook8 - use delegate_to to get ansible controller IP
+  hosts: all
+  become: yes
+
+  tasks:
+  - name: Fetch public IP only once
+    uri:
+      url: "https://api.ipify.org?format=json"
+      return_content: yes
+    register: public_ip
+    delegate_to: localhost
+    run_once: yes
+
+  - debug:
+      msg: "localhost IP={{ public_ip.json.ip }}"
+
