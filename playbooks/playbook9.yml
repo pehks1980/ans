@@ -1,0 +1,66 @@
+# -e "nginx_address=1.2.3.4"
+---
+- hosts: prod
+  become: yes
+  vars:
+    nginx_port: 80
+    nginx_address: ""
+    nginx_image: "nginx:latest"
+    ansible_python_interpreter: /usr/bin/python3
+
+  tasks:
+    - name: Print nginx_address
+      debug:
+        msg: "The Nginx address is {{ nginx_address }}"
+
+    - name: Install required dependencies
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+        state: present
+      when: ansible_facts['os_family'] == "Debian"
+
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+      when: ansible_facts['os_family'] == "Debian"
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release|lower }} stable"
+        state: present
+      when: ansible_facts['os_family'] == "Debian"
+
+    - name: Install Docker CE
+      apt:
+        name: docker-ce
+        state: present
+      when: ansible_facts['os_family'] == "Debian"
+
+    - name: Create Nginx config template
+      template:
+        src: ./nginx/nginx.conf.j2
+        dest: /tmp/nginx.conf
+      notify: restart_nginx
+
+    - name: Ensure Docker is installed
+      shell: "which docker || exit 1"
+
+    - name: Run Nginx container
+      shell: >
+        docker run -d --name nginx -p {{ nginx_port }}:80 -v /tmp/nginx.conf:/etc/nginx/conf.d/default.conf --restart always nginx && docker ps
+      register: docker_out
+      ignore_errors: true
+
+    - name: Debug docker
+      debug:
+        var: docker_out 
+
+  handlers:
+          #- sfdsfsgfeg:
+          - import_tasks: handlers9.yml
+

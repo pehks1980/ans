@@ -65,6 +65,13 @@ resource "aws_security_group" "ansible_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port   = 8000
+    to_port     = 9999
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   #SSH
   ingress {
     from_port   = 22
@@ -124,13 +131,13 @@ resource "aws_instance" "ansible_server" {
   chown -R ubuntu:ubuntu /home/ubuntu/.ssh
   
   # Update and install required packages
-  apt-get update -y
+  apt-get update
   #apt-get upgrade -y
 
   # Install Ansible
   # apt-get install -y software-properties-common
   # add-apt-repository --yes --update ppa:ansible/ansible
-  apt-get install -y ansible tree
+  apt-get install -y ansible tree nmap
 
   # Add Ansible inventory directory and default hosts file
   mkdir -p /home/ubuntu/ansible
@@ -158,5 +165,7 @@ resource "aws_instance" "client_nodes" {
     echo "${file(var.ansible_public_key_file)}" >> /home/ubuntu/.ssh/authorized_keys
     chmod 600 /home/ubuntu/.ssh/authorized_keys
     chown -R ubuntu:ubuntu /home/ubuntu/.ssh
+    apt-get update
+    apt-get install -y tree nmap
   EOF
 }

@@ -101,3 +101,16 @@ playbooks$ mkdir roles
     └── vars
         └── main.yml
 
+check what is in playbook - which asssets in case it cant find handlers
+
+ansible-playbook playbooks/playbook2.yml --list-tasks
+
+playbook: playbooks/playbook2.yml
+
+  play #1 (all): Playbook2 - notify handlers	TAGS: []
+    tasks:
+      Print linux version	TAGS: []
+      Install apache	TAGS: []
+      copy index page to web server	TAGS: []
+      Display copy output	TAGS: []
+      Start apache	TAGS: []
