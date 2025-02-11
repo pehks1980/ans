@@ -1,64 +1,90 @@
 # -e "nginx_address=1.2.3.4"
 ---
-- hosts: prod
+- hosts: "{{ my_hosts }}"
   become: yes
   vars:
+    my_hosts : prod
     nginx_port: 80
     nginx_address: ""
     nginx_image: "nginx:latest"
     ansible_python_interpreter: /usr/bin/python3
 
   tasks:
-    - name: Print nginx_address
-      debug:
-        msg: "The Nginx address is {{ nginx_address }}"
+    - name: Fail if external_var is not set
+      fail:
+        msg: "The ext var nginx_address is not set. Please provide a value for nginx_address -e \"nginx_address=1.2.3.4\""
+      when: nginx_address == ""
 
-    - name: Install required dependencies
-      apt:
-        name:
-          - apt-transport-https
-          - ca-certificates
-          - curl
-          - software-properties-common
-        state: present
-      when: ansible_facts['os_family'] == "Debian"
+    - block:
+      - name: Print nginx_address
+        debug:
+          msg: "The Nginx address is {{ nginx_address }}"
 
-    - name: Add Docker GPG key
-      apt_key:
-        url: https://download.docker.com/linux/ubuntu/gpg
-        state: present
-      when: ansible_facts['os_family'] == "Debian"
+      - name: Install required dependencies
+        apt:
+          name:
+            - apt-transport-https
+            - ca-certificates
+            - curl
+            - software-properties-common
+          state: present
+        when: ansible_facts['os_family'] == "Debian"
 
-    - name: Add Docker repository
-      apt_repository:
-        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release|lower }} stable"
-        state: present
-      when: ansible_facts['os_family'] == "Debian"
+      - name: Add Docker GPG key
+        apt_key:
+          url: https://download.docker.com/linux/ubuntu/gpg
+          state: present
+        when: ansible_facts['os_family'] == "Debian"
 
-    - name: Install Docker CE
-      apt:
-        name: docker-ce
-        state: present
-      when: ansible_facts['os_family'] == "Debian"
+      - name: Add Docker repository
+        apt_repository:
+          repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release|lower }} stable"
+          state: present
+        when: ansible_facts['os_family'] == "Debian"
 
-    - name: Create Nginx config template
-      template:
-        src: ./nginx/nginx.conf.j2
-        dest: /tmp/nginx.conf
-      notify: restart_nginx
+      - name: Install Docker CE
+        apt:
+          name: docker-ce
+          state: present
+        when: ansible_facts['os_family'] == "Debian"
 
-    - name: Ensure Docker is installed
-      shell: "which docker || exit 1"
+      - name: Create Nginx config template
+        template:
+          src: ./nginx/nginx.conf.j2
+          dest: /tmp/nginx.conf
+        notify: restart_nginx
 
-    - name: Run Nginx container
-      shell: >
-        docker run -d --name nginx -p {{ nginx_port }}:80 -v /tmp/nginx.conf:/etc/nginx/conf.d/default.conf --restart always nginx && docker ps
-      register: docker_out
-      ignore_errors: true
+      - name: Ensure Docker is installed
+        shell: "which docker || exit 1"
 
-    - name: Debug docker
-      debug:
-        var: docker_out 
+      - name: check_and_restart_nginx
+        shell: |
+          set -x
+          if [[ $(docker ps | grep nginx) ]]; then
+                echo "Nginx container is already running. removing.."
+                docker stop nginx
+                docker rm nginx
+          else 
+                echo "Nginx container not running. ok."
+          fi
+        args:
+          executable: /bin/bash
+        ignore_errors: true
+        register: sh_out
+
+      - name : debug check_and_restart_nginx
+        debug: msg={{ sh_out }}
+
+      - name: Run Nginx container
+        shell: >
+          docker run -d --name nginx -p {{ nginx_port }}:80 -v /tmp/nginx.conf:/etc/nginx/conf.d/default.conf --restart always nginx && docker ps
+        register: docker_out
+        ignore_errors: true
+
+      - name: Debug docker
+        debug:
+          var: docker_out
+      when: nginx_address != ""
 
   handlers:
           #- sfdsfsgfeg:

@@ -4,7 +4,14 @@
     docker stop nginx || true
     docker rm nginx || true
   ignore_errors: true
+  notify: Run New Nginx
 
-- name: Run new Nginx container
+- name: Run New Nginx
   shell: >
     docker run -d --name nginx -p {{ nginx_port }}:80 -v /tmp/nginx.conf:/etc/nginx/conf.d/default.conf --restart always nginx
+  notify: debug nginx
+  register: docker_out
+
+- name: debug nginx
+  debug: msg={{ docker_out.stdout }} 
+

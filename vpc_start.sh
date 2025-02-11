@@ -24,3 +24,7 @@ scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ans_conf/ansible.cfg ubuntu@${a
 scp -r -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ans_conf/group_vars ubuntu@${ansible_ip}:${ans_folder}/
 scp -r -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa playbooks ubuntu@${ansible_ip}:${ans_folder}/
 ssh ubuntu@${ansible_ip} "cd ansible && ansible --version && ansible -v -i hosts all -m ping"
+
+#print addresses again
+terraform output
+
