@@ -1,0 +1,8 @@
+# playbook.yml -vault thing check on master-host
+- hosts: localhost
+  vars_files:
+    - secrets10.yml
+  tasks:
+    - name: Print a secret
+      debug:
+        msg: "This is a secret message. {{ my_secret_password }}"

@@ -114,3 +114,33 @@ playbook: playbooks/playbook2.yml
       copy index page to web server	TAGS: []
       Display copy output	TAGS: []
       Start apache	TAGS: []
+
+
+#vault encrypt decrypt commands:
+
+#entire playbook
+ansible-vault encrypt playbooks/playbook10.yml
+ansible-vault decrypt playbooks/playbook10.yml
+ansible-vault edit playbooks/playbook10.yml
+# run it
+ansible-playbook playbooks/playbook10.yml -J | [--ask-vault-pass]
+
+#special encrypted secrets file with credentials variables:
+ansible-vault create|edit playbooks/secrets10.yml
+
+#vault password: in -file then can be specified in -env var
+-file:
+ansible-playbook playbook.yml --vault-password-file vault_password.txt
+
+#use to run playbook
+ansible-playbook playbooks/playbook10.yml --vault-password-file playbooks/vault_password_example.txt
+
+#set env var - link to stored file with passwd
+export ANSIBLE_VAULT_PASSWORD_FILE=playbooks/vault_password_example.txt
+#run
+ansible-playbook playbooks/playbook10.yml
+#add:
++ chmod 600 vault_password.txt - secure your secrets
++ normally it should not be inside of any git repo scope
+
+
